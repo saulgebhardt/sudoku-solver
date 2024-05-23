@@ -2,12 +2,14 @@ mod cell;
 mod logic;
 
 use cell::SudokuCell;
-use logic::is_valid;
 use prettytable::Table;
 
 //NOTE: We need to store the values of the Cells in structs so we can keep track whether we are
 //allowed to change values. Based on if the value was there from the start, we can also assign a
 //color to it.
+//
+//NOTE: Can we confirm somehow that there exists only 1 solution? If there exist more than 1, the
+//sudoku is invalid.
 
 fn main() {
     //TODO: Read a single sudoku from a file, and parse it as a 2d array(Vec) of u8
@@ -37,12 +39,7 @@ fn print(sudoku: &Vec<Vec<SudokuCell>>) {
     for line in sudoku {
         table.add_row(line.into());
     }
-
     table.printstd();
 }
-
-//TODO: Implement a sudoku solving algorithm. Backtracking seems like a decent start
-//
-//
 //TODO: Implement some small timing tool, useful for assessing efficiency of algorithm and show
 //paralellism.
