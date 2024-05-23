@@ -2,6 +2,7 @@ mod cell;
 mod logic;
 
 use cell::SudokuCell;
+use logic::is_valid;
 use prettytable::Table;
 
 //NOTE: We need to store the values of the Cells in structs so we can keep track whether we are
@@ -15,11 +16,6 @@ fn main() {
     );
     let sudoku_puzzle = create_sudoku(temp_string);
     print(&sudoku_puzzle);
-
-    println!(
-        "The value is: {} and this movable is {} here",
-        sudoku_puzzle[0][0].value, sudoku_puzzle[0][0].movable
-    );
 }
 
 fn create_sudoku(input_string: String) -> Vec<Vec<SudokuCell>> {

@@ -1,8 +1,8 @@
-use crate::cell::Cell;
+use crate::cell::SudokuCell;
 
 //WARNING: Maybe we need to borrow value as well, as we then do not lose it. If we do, we also need
 //to borrow the Cell in the vec itself as well.
-fn is_valid(sudoku: &Vec<Vec<Cell>>, row: usize, column: usize, value: u8) -> bool {
+pub fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8) -> bool {
     //NOTE: Check the row condition
     for i in 0..8 {
         if sudoku[row][i].value == value {
@@ -33,6 +33,6 @@ fn is_valid(sudoku: &Vec<Vec<Cell>>, row: usize, column: usize, value: u8) -> bo
     true
 }
 
-fn solver(sudoku: &Vec<Vec<Cell>>) -> Vec<Vec<Cell>> {
-    sudoku.clone()
+fn _backtrack(sudoku: Vec<Vec<SudokuCell>>) -> Vec<Vec<SudokuCell>> {
+    sudoku
 }
