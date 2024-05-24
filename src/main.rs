@@ -4,6 +4,10 @@ mod logic;
 use cell::SudokuCell;
 use logic::backtrack;
 use prettytable::Table;
+use std::fs::File;
+use std::io::prelude::*;
+use std::io::BufReader;
+use std::time::Instant;
 
 //NOTE: We need to store the values of the Cells in structs so we can keep track whether we are
 //allowed to change values. Based on if the value was there from the start, we can also assign a
@@ -13,17 +17,31 @@ use prettytable::Table;
 //sudoku is invalid.
 
 fn main() {
-    //TODO: Read a single sudoku from a file, and parse it as a 2d array(Vec) of u8
-    let temp_string = String::from(
-        "050703060007000800000816000000030000005000100730040086906000204840572093000409000",
-    );
-    let sudoku_puzzle = create_sudoku(temp_string);
-    print(&sudoku_puzzle);
-    if let Ok(solution) = backtrack(sudoku_puzzle) {
-        print(&solution);
-    } else {
-        println!("Sudoku could not be solved");
+    let file = File::open("easy.txt").expect("File not found!");
+    let reader = BufReader::new(file);
+    let mut sudokus_to_solve: Vec<String> = Vec::new();
+    let mut amount_of_puzzles = 0;
+    for line in reader.lines() {
+        if let Ok(x) = line {
+            sudokus_to_solve.push(String::from(x.split(' ').collect::<Vec<&str>>()[1]));
+            amount_of_puzzles += 1;
+        }
     }
+
+    let time_to_solve = Instant::now();
+    for sudoku_string in sudokus_to_solve {
+        let sudoku_puzzle = create_sudoku(sudoku_string);
+        if let Ok(solution) = backtrack(sudoku_puzzle) {
+            print(&solution);
+        } else {
+            println!("Sudoku could not be solved:");
+        }
+    }
+    println!(
+        "Solved {} sudokus. It took {} seconds.",
+        amount_of_puzzles,
+        time_to_solve.elapsed().as_secs()
+    );
 }
 
 fn create_sudoku(input_string: String) -> Vec<Vec<SudokuCell>> {
