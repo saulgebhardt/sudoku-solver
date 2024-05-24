@@ -6,12 +6,7 @@ use crate::cell::SudokuCell;
 * to place a value at a specific coordinate.
 */
 
-enum ValidityError {
-    IsInvalid,
-}
-
-//WARNING: Maybe we need to borrow value as well, as we then do not lose it. If we do, we also need
-//to borrow the Cell in the vec itself as well.
+pub struct InvalidError;
 
 fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8) -> bool {
     for i in 0..8 {
@@ -36,9 +31,7 @@ fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8)
     true
 }
 
-fn backtrack(
-    mut sudoku: Vec<Vec<SudokuCell>>,
-) -> Result<Vec<Vec<SudokuCell>>, crate::logic::ValidityError> {
+pub fn backtrack(sudoku: Vec<Vec<SudokuCell>>) -> Result<Vec<Vec<SudokuCell>>, InvalidError> {
     //We check first if the entire grid is filled with values.
     //If it is not, we take the store the first empty value.
     let mut is_filled = true;
@@ -64,20 +57,14 @@ fn backtrack(
     if is_filled {
         return Ok(sudoku);
     }
-
-    //FIX: The problem here is that it is not possible to fill in a value temporarily and call it
-    //recursively to backtrack. However, then it owns the value, and we do not return it.
-
-    /*    for value in 1..=9 {
-            if is_valid(&sudoku, row, column, value) {
-                sudoku[row][column].value = value;
-                if let Ok(x) = backtrack(sudoku) {
-                    return Ok(x);
-                } else {
-                    x[row][column].value = 0;
-                }
+    for value in 1..=9 {
+        let mut sudoku_clone = sudoku.clone();
+        if is_valid(&sudoku_clone, row, column, value) {
+            sudoku_clone[row][column].value = value;
+            if let Ok(x) = backtrack(sudoku_clone) {
+                return Ok(x);
             }
-       }
-    */
-    Err(ValidityError::IsInvalid)
+        }
+    }
+    Err(InvalidError)
 }

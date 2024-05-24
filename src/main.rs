@@ -2,6 +2,7 @@ mod cell;
 mod logic;
 
 use cell::SudokuCell;
+use logic::backtrack;
 use prettytable::Table;
 
 //NOTE: We need to store the values of the Cells in structs so we can keep track whether we are
@@ -18,6 +19,11 @@ fn main() {
     );
     let sudoku_puzzle = create_sudoku(temp_string);
     print(&sudoku_puzzle);
+    if let Ok(solution) = backtrack(sudoku_puzzle) {
+        print(&solution);
+    } else {
+        println!("Sudoku could not be solved");
+    }
 }
 
 fn create_sudoku(input_string: String) -> Vec<Vec<SudokuCell>> {
