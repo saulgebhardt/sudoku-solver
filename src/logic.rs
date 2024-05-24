@@ -36,16 +36,48 @@ fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8)
     true
 }
 
-//NOTE: We can do something cute to solve this. If we return a result, we can return either a grid
-//or we return an error, saying there has been some kind of conflict.
-fn _backtrack(
-    sudoku: Vec<Vec<SudokuCell>>,
+fn backtrack(
+    mut sudoku: Vec<Vec<SudokuCell>>,
 ) -> Result<Vec<Vec<SudokuCell>>, crate::logic::ValidityError> {
-    if true {
-        return Err(ValidityError::IsInvalid);
+    //We check first if the entire grid is filled with values.
+    //If it is not, we take the store the first empty value.
+    let mut is_filled = true;
+    let mut row: usize = 0;
+    let mut column: usize = 0;
+    for (line_index, line) in sudoku.clone().into_iter().enumerate() {
+        for (cell_index, cell) in line.into_iter().enumerate() {
+            if cell.value == 0 {
+                is_filled = false;
+                row = line_index;
+                column = cell_index;
+                break;
+            }
+        }
+        if !is_filled {
+            break;
+        }
     }
-    Ok(sudoku)
 
-    //TODO: If Err(ValidityError::IsInvalid) is returned, it means that entering that a specific
-    //value on a specific location means that in its row, column or box that value already exists.
+    //If is_filled is true, we know that all values are filled in, meaning that the sudoku is
+    //solved
+
+    if is_filled {
+        return Ok(sudoku);
+    }
+
+    //FIX: The problem here is that it is not possible to fill in a value temporarily and call it
+    //recursively to backtrack. However, then it owns the value, and we do not return it.
+
+    /*    for value in 1..=9 {
+            if is_valid(&sudoku, row, column, value) {
+                sudoku[row][column].value = value;
+                if let Ok(x) = backtrack(sudoku) {
+                    return Ok(x);
+                } else {
+                    x[row][column].value = 0;
+                }
+            }
+       }
+    */
+    Err(ValidityError::IsInvalid)
 }
