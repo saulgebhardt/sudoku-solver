@@ -8,3 +8,4 @@ Solve the first 1000 sudokus from easy.txt
 |-------|-----|
 |Default Backtracking| 3467s|
 |Default Backtracking without copy | 990s |
+|Backtracking with pencilmarks | 192s|
