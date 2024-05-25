@@ -3,6 +3,8 @@ mod logic;
 
 use cell::SudokuCell;
 use logic::backtrack;
+use logic::backtrack_pencilmarks;
+use logic::create_pencilmarks;
 use prettytable::Table;
 use std::fs::File;
 use std::io::prelude::*;
@@ -26,7 +28,7 @@ fn main() {
         if let Ok(x) = line {
             sudokus_to_solve.push(String::from(x.split(' ').collect::<Vec<&str>>()[1]));
             amount_of_puzzles += 1;
-            if amount_of_puzzles == 50 {
+            if amount_of_puzzles == 1000 {
                 break;
             }
         }
@@ -35,7 +37,8 @@ fn main() {
     let time_to_solve = Instant::now();
     for sudoku_string in sudokus_to_solve {
         let sudoku_puzzle = create_sudoku(sudoku_string);
-        if let Ok(solution) = backtrack(sudoku_puzzle) {
+        let pencilmarks = create_pencilmarks(&sudoku_puzzle);
+        if let Ok(solution) = backtrack_pencilmarks(sudoku_puzzle, pencilmarks) {
             print_sudoku(&solution);
         } else {
             println!("Sudoku could not be solved:");
