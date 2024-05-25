@@ -15,6 +15,7 @@ use std::time::Instant;
 //
 //NOTE: Can we confirm somehow that there exists only 1 solution? If there exist more than 1, the
 //sudoku is invalid.
+//
 
 fn main() {
     let file = File::open("easy.txt").expect("File not found!");
@@ -32,15 +33,16 @@ fn main() {
     for sudoku_string in sudokus_to_solve {
         let sudoku_puzzle = create_sudoku(sudoku_string);
         if let Ok(solution) = backtrack(sudoku_puzzle) {
-            print(&solution);
+            print_sudoku(&solution);
         } else {
             println!("Sudoku could not be solved:");
         }
     }
+    println!("Done");
     println!(
-        "Solved {} sudokus. It took {} seconds.",
+        "Solved {} sudokus. It took {:?}.",
         amount_of_puzzles,
-        time_to_solve.elapsed().as_secs()
+        time_to_solve.elapsed()
     );
 }
 
@@ -58,7 +60,7 @@ fn create_sudoku(input_string: String) -> Vec<Vec<SudokuCell>> {
     sudoku_puzzle
 }
 
-fn print(sudoku: &Vec<Vec<SudokuCell>>) {
+fn print_sudoku(sudoku: &Vec<Vec<SudokuCell>>) {
     let mut table = Table::new();
     for line in sudoku {
         table.add_row(line.into());
