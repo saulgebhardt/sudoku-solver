@@ -26,6 +26,9 @@ fn main() {
         if let Ok(x) = line {
             sudokus_to_solve.push(String::from(x.split(' ').collect::<Vec<&str>>()[1]));
             amount_of_puzzles += 1;
+            if amount_of_puzzles == 50 {
+                break;
+            }
         }
     }
 
@@ -67,5 +70,3 @@ fn print_sudoku(sudoku: &Vec<Vec<SudokuCell>>) {
     }
     table.printstd();
 }
-//TODO: Implement some small timing tool, useful for assessing efficiency of algorithm and show
-//paralellism.

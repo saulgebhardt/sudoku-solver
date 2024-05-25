@@ -6,7 +6,7 @@ use crate::cell::SudokuCell;
 * to place a value at a specific coordinate.
 */
 
-pub struct InvalidError;
+pub struct InvalidError(Vec<Vec<SudokuCell>>);
 
 fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8) -> bool {
     for i in 0..8 {
@@ -31,7 +31,7 @@ fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8)
     true
 }
 
-pub fn backtrack(sudoku: Vec<Vec<SudokuCell>>) -> Result<Vec<Vec<SudokuCell>>, InvalidError> {
+pub fn backtrack(mut sudoku: Vec<Vec<SudokuCell>>) -> Result<Vec<Vec<SudokuCell>>, InvalidError> {
     //We check first if the entire grid is filled with values.
     //If it is not, we take the store the first empty value.
     let mut is_filled = true;
@@ -58,13 +58,14 @@ pub fn backtrack(sudoku: Vec<Vec<SudokuCell>>) -> Result<Vec<Vec<SudokuCell>>, I
         return Ok(sudoku);
     }
     for value in 1..=9 {
-        let mut sudoku_clone = sudoku.clone();
-        if is_valid(&sudoku_clone, row, column, value) {
-            sudoku_clone[row][column].value = value;
-            if let Ok(x) = backtrack(sudoku_clone) {
-                return Ok(x);
+        if is_valid(&sudoku, row, column, value) {
+            sudoku[row][column].value = value;
+            match backtrack(sudoku) {
+                Ok(x) => return Ok(x),
+                Err(InvalidError(e)) => sudoku = e,
             }
+            sudoku[row][column].value = 0;
         }
     }
-    Err(InvalidError)
+    Err(InvalidError(sudoku))
 }
