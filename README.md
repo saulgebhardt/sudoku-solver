@@ -4,3 +4,4 @@ The sudokus are from the [Sudoku Exchange Puzzle Bank](https://github.com/grantm
 
 ### Results 
 With the default backtracking implementation: Solved 1000 sudokus. It took 3467 seconds.
+Backtrack without copy: 990 seconds.
