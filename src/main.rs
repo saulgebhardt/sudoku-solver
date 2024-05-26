@@ -6,6 +6,7 @@ use logic::backtrack;
 use logic::backtrack_pencilmarks;
 use logic::create_pencilmarks;
 use prettytable::Table;
+use rayon::prelude::*;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -20,7 +21,7 @@ use std::time::Instant;
 //
 
 fn main() {
-    let file = File::open("diabolical.txt").expect("File not found!");
+    let file = File::open("easy.txt").expect("File not found!");
     let reader = BufReader::new(file);
     let mut sudokus_to_solve: Vec<String> = Vec::new();
     let mut amount_of_puzzles = 0;
@@ -35,21 +36,28 @@ fn main() {
     }
 
     let time_to_solve = Instant::now();
-    for sudoku_string in sudokus_to_solve {
-        let sudoku_puzzle = create_sudoku(sudoku_string);
-        let pencilmarks = create_pencilmarks(&sudoku_puzzle);
-        if let Ok(solution) = backtrack_pencilmarks(sudoku_puzzle, &pencilmarks) {
-            print_sudoku(&solution);
-        } else {
-            println!("Sudoku could not be solved:");
-        }
-    }
+    sudokus_to_solve
+        .par_iter()
+        .for_each(|x| solve_sudoku(x.to_owned()));
+    /*for sudoku_string in sudokus_to_solve {
+        solve_sudoku(sudoku_string);
+    }*/
     println!("Done");
     println!(
         "Solved {} sudokus. It took {:?}.",
         amount_of_puzzles,
         time_to_solve.elapsed()
     );
+}
+
+fn solve_sudoku(sudoku_string: String) {
+    let sudoku_puzzle = create_sudoku(sudoku_string);
+    let pencilmarks = create_pencilmarks(&sudoku_puzzle);
+    if let Ok(solution) = backtrack_pencilmarks(sudoku_puzzle, &pencilmarks) {
+        print_sudoku(&solution);
+    } else {
+        println!("Sudoku could not be solved:");
+    }
 }
 
 fn create_sudoku(input_string: String) -> Vec<Vec<SudokuCell>> {
@@ -72,4 +80,11 @@ fn print_sudoku(sudoku: &Vec<Vec<SudokuCell>>) {
         table.add_row(line.into());
     }
     table.printstd();
+    /*for line in sudoku {
+        for cell in line {
+            print!("{}|", cell);
+        }
+        println!("\n");
+    }
+    println!("Sudoku printed");*/
 }
