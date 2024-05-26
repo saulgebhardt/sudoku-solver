@@ -74,17 +74,17 @@ pub fn backtrack(mut sudoku: Vec<Vec<SudokuCell>>) -> Result<Vec<Vec<SudokuCell>
 
 pub fn backtrack_pencilmarks(
     mut sudoku: Vec<Vec<SudokuCell>>,
-    pencilmarks: HashMap<(usize, usize), Vec<u8>>,
+    pencilmarks: &HashMap<(usize, usize), Vec<u8>>,
 ) -> Result<Vec<Vec<SudokuCell>>, InvalidError> {
     let mut is_filled = true;
     let mut row: usize = 0;
     let mut column: usize = 0;
-    for (line_index, line) in sudoku.clone().into_iter().enumerate() {
-        for (cell_index, cell) in line.into_iter().enumerate() {
-            if cell.value == 0 {
+    for i in 0..9 {
+        for j in 0..9 {
+            if sudoku[i][j].value == 0 {
                 is_filled = false;
-                row = line_index;
-                column = cell_index;
+                row = i;
+                column = j;
                 break;
             }
         }
@@ -104,7 +104,7 @@ pub fn backtrack_pencilmarks(
         let temp_value = value.clone();
         if is_valid(&sudoku, row, column, temp_value) {
             sudoku[row][column].value = temp_value;
-            match backtrack_pencilmarks(sudoku, pencilmarks.clone()) {
+            match backtrack_pencilmarks(sudoku, &pencilmarks) {
                 Ok(x) => return Ok(x),
                 Err(InvalidError(e)) => sudoku = e,
             }

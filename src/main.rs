@@ -38,7 +38,7 @@ fn main() {
     for sudoku_string in sudokus_to_solve {
         let sudoku_puzzle = create_sudoku(sudoku_string);
         let pencilmarks = create_pencilmarks(&sudoku_puzzle);
-        if let Ok(solution) = backtrack_pencilmarks(sudoku_puzzle, pencilmarks) {
+        if let Ok(solution) = backtrack_pencilmarks(sudoku_puzzle, &pencilmarks) {
             print_sudoku(&solution);
         } else {
             println!("Sudoku could not be solved:");
