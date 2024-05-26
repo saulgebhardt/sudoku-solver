@@ -20,7 +20,7 @@ use std::time::Instant;
 //
 
 fn main() {
-    let file = File::open("easy.txt").expect("File not found!");
+    let file = File::open("diabolical.txt").expect("File not found!");
     let reader = BufReader::new(file);
     let mut sudokus_to_solve: Vec<String> = Vec::new();
     let mut amount_of_puzzles = 0;
