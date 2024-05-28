@@ -1,6 +1,10 @@
+pub mod backtrack;
+pub mod backtrack_pencilmarks;
 pub mod cell;
 
 use crate::cell::SudokuCell;
+
+pub struct InvalidError(pub Vec<Vec<SudokuCell>>);
 
 pub fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8) -> bool {
     for i in 0..8 {
