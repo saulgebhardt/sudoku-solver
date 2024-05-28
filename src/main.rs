@@ -58,7 +58,7 @@ fn solve_sudoku(sudoku_string: String) {
 }
 
 fn create_sudoku(input_string: String) -> Vec<Vec<SudokuCell>> {
-    let mut input_iterator = input_string.chars().into_iter();
+    let mut input_iterator = input_string.chars();
     let mut sudoku_puzzle: Vec<Vec<SudokuCell>> = Vec::new();
     for _ in 0..9 {
         let mut line: Vec<SudokuCell> = Vec::new();

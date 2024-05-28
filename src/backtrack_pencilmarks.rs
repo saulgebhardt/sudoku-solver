@@ -59,7 +59,7 @@ pub fn create_pencilmarks(sudoku: &Vec<Vec<SudokuCell>>) -> HashMap<(usize, usiz
 
 fn possible_values(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize) -> Vec<u8> {
     let mut possible: Vec<u8> = Vec::new();
-    for value in 1..=9 as u8 {
+    for value in 1..=9_u8 {
         let mut found = false;
         for i in 0..9 {
             if sudoku[row][i].value == value {
