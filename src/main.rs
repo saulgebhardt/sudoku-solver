@@ -5,9 +5,9 @@ use std::io::prelude::*;
 use std::io::BufReader;
 use std::time::Instant;
 use sudoku_solver::backtrack;
-use sudoku_solver::backtrack_pencilmarks::backtrack_pencilmarks;
-use sudoku_solver::backtrack_pencilmarks::create_pencilmarks;
 use sudoku_solver::cell::SudokuCell;
+use sudoku_solver::pencilmarks::backtrack_pencilmarks;
+use sudoku_solver::pencilmarks::create_pencilmarks;
 
 //NOTE: We need to store the values of the Cells in structs so we can keep track whether we are
 //allowed to change values. Based on if the value was there from the start, we can also assign a

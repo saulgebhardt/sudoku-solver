@@ -1,6 +1,6 @@
 pub mod backtrack;
-pub mod backtrack_pencilmarks;
 pub mod cell;
+pub mod pencilmarks;
 
 use crate::cell::SudokuCell;
 
