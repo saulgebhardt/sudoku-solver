@@ -1,7 +1,5 @@
-mod cell;
 mod logic;
 
-use cell::SudokuCell;
 use logic::backtrack;
 use logic::backtrack_pencilmarks;
 use logic::create_pencilmarks;
@@ -11,6 +9,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::time::Instant;
+use sudoku_solver::cell::SudokuCell;
 
 //NOTE: We need to store the values of the Cells in structs so we can keep track whether we are
 //allowed to change values. Based on if the value was there from the start, we can also assign a

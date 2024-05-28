@@ -1,6 +1,6 @@
 use std::collections::HashMap;
-
-use crate::cell::SudokuCell;
+use sudoku_solver::cell::SudokuCell;
+use sudoku_solver::is_valid;
 
 /*
 * This file contains the logic for the sudoku solver program.
@@ -9,29 +9,6 @@ use crate::cell::SudokuCell;
 */
 
 pub struct InvalidError(Vec<Vec<SudokuCell>>);
-
-fn is_valid(sudoku: &Vec<Vec<SudokuCell>>, row: usize, column: usize, value: u8) -> bool {
-    for i in 0..8 {
-        if sudoku[row][i].value == value {
-            return false;
-        }
-    }
-    for i in 0..8 {
-        if sudoku[i][column].value == value {
-            return false;
-        }
-    }
-    let x_coord = (column / 3) * 3;
-    let y_coord = (row / 3) * 3;
-    for i in y_coord..y_coord + 3 {
-        for j in x_coord..x_coord + 3 {
-            if sudoku[i][j].value == value {
-                return false;
-            }
-        }
-    }
-    true
-}
 
 pub fn backtrack(mut sudoku: Vec<Vec<SudokuCell>>) -> Result<Vec<Vec<SudokuCell>>, InvalidError> {
     //We check first if the entire grid is filled with values.
